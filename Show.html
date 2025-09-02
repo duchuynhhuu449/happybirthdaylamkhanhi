@@ -2,91 +2,352 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>🎂 Chúc mừng sinh nhật – Nguyễn Thị Bích Yên</title>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
+<!-- Fullscreen and PWA meta tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+
 <style>
     * { box-sizing: border-box; margin:0; padding:0; }
-    html, body { height:100%; font-family:'Dancing Script', cursive,'Courier New', monospace; overflow:hidden; position:relative; }
+    html, body { 
+        height:100vh; 
+        width:100vw;
+        font-family:'Dancing Script', cursive,'Courier New', monospace; 
+        overflow:hidden; 
+        position:relative;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        /* Hide scrollbars completely */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        display: none;
+    }
 
     body::before {
         content:'';
-        position:fixed; inset:0;
+        position:fixed; 
+        inset:0;
         background:url('./assets/img/BirthdayCommingSoon.png') center/cover no-repeat;
-        filter:blur(6px); z-index:-1;
+        filter:blur(6px); 
+        z-index:-1;
+        width: 100vw;
+        height: 100vh;
     }
 
     /* Start Screen */
     #startScreen {
-        position:fixed; inset:0;
-        display:flex; flex-direction:column; align-items:center; justify-content:center;
-        background:rgba(0,0,0,0.85); color:#fff; z-index:250;
+        position:fixed; 
+        inset:0;
+        width: 100vw;
+        height: 100vh;
+        display:flex; 
+        flex-direction:column; 
+        align-items:center; 
+        justify-content:center;
+        background:rgba(0,0,0,0.85); 
+        color:#fff; 
+        z-index:250;
+        padding: 20px;
     }
-    #startScreen h1 { font-size:28px; margin-bottom:20px; text-align:center; }
+    
+    #startScreen h1 { 
+        font-size: clamp(18px, 4vw, 32px);
+        margin-bottom:20px; 
+        text-align:center; 
+        line-height: 1.4;
+        max-width: 90%;
+    }
+    
     #startScreen button {
-        font-size:20px; padding:12px 24px; border:none; border-radius:12px;
-        background:linear-gradient(90deg,#ff9bce,#ffd166); color:#000; cursor:pointer;
+        font-size: clamp(16px, 3vw, 24px);
+        padding: clamp(10px, 2vw, 16px) clamp(20px, 4vw, 32px);
+        border:none; 
+        border-radius:12px;
+        background:linear-gradient(90deg,#ff9bce,#ffd166); 
+        color:#000; 
+        cursor:pointer;
+        font-family: inherit;
+        font-weight: 700;
+        transition: transform 0.2s ease;
+    }
+    
+    #startScreen button:hover {
+        transform: scale(1.05);
+    }
+    
+    #startScreen button:active {
+        transform: scale(0.95);
     }
 
     /* Rotate notice */
     .rotateNotice {
-        position:fixed; inset:0; display:none !important; z-index:200;
-        background:rgba(0,0,0,0.95); color:#fff;
-        display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+        position:fixed; 
+        inset:0; 
+        display:none; 
+        z-index:200;
+        background:rgba(0,0,0,0.95); 
+        color:#fff;
+        align-items:center; 
+        justify-content:center; 
+        text-align:center; 
+        padding:20px;
+        width: 100vw;
+        height: 100vh;
     }
-    .rotateNotice.show { display:flex; }
-    .rotateNotice h2 { font-size:22px; margin-bottom:8px; }
-    .rotateNotice p { opacity:0.9; }
+    
+    .rotateNotice.show { 
+        display:flex !important; 
+    }
+    
+    .rotateNotice h2 { 
+        font-size: clamp(18px, 4vw, 28px);
+        margin-bottom:12px; 
+        line-height: 1.3;
+    }
+    
+    .rotateNotice p { 
+        opacity:0.9; 
+        font-size: clamp(14px, 3vw, 18px);
+        line-height: 1.4;
+        max-width: 90%;
+    }
 
     /* Overlay */
     .overlay {
-        position:fixed; inset:0;
+        position:fixed; 
+        inset:0;
         background:rgba(0,0,0,0.45);
-        z-index:2; transition:opacity 900ms ease;
+        z-index:2; 
+        transition:opacity 900ms ease;
+        width: 100vw;
+        height: 100vh;
     }
 
     /* Stage & Card */
-    .stage { position:fixed; inset:0; display:grid; place-items:center; padding:24px; z-index:10; }
+    .stage { 
+        position:fixed; 
+        inset:0; 
+        display:grid; 
+        place-items:center; 
+        padding: clamp(12px, 3vw, 24px);
+        z-index:10;
+        width: 100vw;
+        height: 100vh;
+    }
+    
     .card {
-        max-width:1000px; width:90%; height:400px;
-        background:rgba(0,0,0,0.55); border-radius:20px;
-        padding:36px; text-align:left; position:relative;
-        box-shadow:0 12px 50px rgba(0,0,0,0.6); z-index:20;
+        max-width: min(1000px, 95vw);
+        width: 100%;
+        height: clamp(300px, 70vh, 500px);
+        background:rgba(0,0,0,0.55); 
+        border-radius: clamp(12px, 2vw, 20px);
+        padding: clamp(20px, 4vw, 36px);
+        text-align:left; 
+        position:relative;
+        box-shadow:0 12px 50px rgba(0,0,0,0.6); 
+        z-index:20;
+        display: flex;
+        flex-direction: column;
     }
 
     .headline {
-        font-size:36px; text-align:center; margin-bottom:18px;
+        font-size: clamp(20px, 5vw, 36px);
+        text-align:center; 
+        margin-bottom: clamp(12px, 2vh, 18px);
         background:linear-gradient(90deg,#ffd166,#ff9bce);
-        -webkit-background-clip:text; background-clip:text; color:transparent;
+        -webkit-background-clip:text; 
+        background-clip:text; 
+        color:transparent;
         text-shadow:0 6px 18px rgba(0,0,0,0.45);
-        display:flex; align-items:center; justify-content:center; gap:10px;
+        display:flex; 
+        align-items:center; 
+        justify-content:center; 
+        gap: clamp(6px, 1.5vw, 10px);
+        line-height: 1.2;
+        flex-shrink: 0;
     }
-    .headline .icon { font-size:34px; transform:translateY(2px); }
+    
+    .headline .icon { 
+        font-size: clamp(18px, 4.5vw, 34px);
+        transform:translateY(2px); 
+    }
 
-    .content { font-size:28px; line-height:1.45; min-height:12em; color:#fff; display:block; align-items:center; justify-content:center; text-align:center; }
-    .typewriter { white-space:pre-wrap; max-width:92%; margin:0 auto; display:block;text-align: center; }
-    .typewriter::after { content:'|'; display:inline-block; margin-left:0.04em; opacity:1; animation:blink 1s steps(1,end) infinite; vertical-align:bottom; font-weight:700; }
+    .content { 
+        font-size: clamp(16px, 4vw, 28px);
+        line-height:1.45; 
+        color:#fff; 
+        display:flex; 
+        align-items:center; 
+        justify-content:center; 
+        text-align:center;
+        flex: 1;
+        padding: clamp(10px, 2vh, 20px) 0;
+    }
+    
+    .typewriter { 
+        white-space:pre-wrap; 
+        max-width:100%; 
+        margin:0 auto; 
+        display:block;
+        text-align: center;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .typewriter::after { 
+        content:'|'; 
+        display:inline-block; 
+        margin-left:0.04em; 
+        opacity:1; 
+        animation:blink 1s steps(1,end) infinite; 
+        vertical-align:bottom; 
+        font-weight:700; 
+    }
+    
     @keyframes blink { 50% { opacity:0; } }
 
-    .bottomBar { position:absolute; left:20px; right:20px; bottom:16px; display:flex; align-items:center; gap:12px; z-index:30; }
-    .progress { flex:1; height:8px; background:rgba(255,255,255,0.08); border-radius:8px; overflow:hidden; position:relative; }
-    .progressInner { width:0%; height:100%; background:linear-gradient(90deg,#ff9bce,#ffd166); transition:width linear; }
-    .progText { min-width:48px; text-align:center; font-size:14px; background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:999px; }
+    .bottomBar { 
+        position:absolute; 
+        left: clamp(12px, 3vw, 20px);
+        right: clamp(12px, 3vw, 20px);
+        bottom: clamp(12px, 2vh, 16px);
+        display:flex; 
+        align-items:center; 
+        gap: clamp(8px, 2vw, 12px);
+        z-index:30;
+        flex-shrink: 0;
+    }
+    
+    .progress { 
+        flex:1; 
+        height: clamp(6px, 1.5vw, 8px);
+        background:rgba(255,255,255,0.08); 
+        border-radius: clamp(6px, 1.5vw, 8px);
+        overflow:hidden; 
+        position:relative; 
+    }
+    
+    .progressInner { 
+        width:0%; 
+        height:100%; 
+        background:linear-gradient(90deg,#ff9bce,#ffd166); 
+        transition:width linear; 
+    }
+    
+    .progText { 
+        min-width: clamp(40px, 8vw, 48px);
+        text-align:center; 
+        font-size: clamp(12px, 2.5vw, 14px);
+        background:rgba(255,255,255,0.06); 
+        padding: clamp(4px, 1vw, 6px) clamp(6px, 2vw, 10px);
+        border-radius:999px; 
+        white-space: nowrap;
+    }
 
     /* Balloons */
-    .balloons { position:fixed; inset:0; pointer-events:none; z-index:5; }
-    .balloon { position:absolute; bottom:-120px; border-radius:50%; opacity:0.9; transform-origin:center bottom; filter:blur(.2px); }
-    @keyframes floatUp { 0% { transform:translateY(0) translateX(0) rotate(0deg); opacity:1; } 100% { transform:translateY(-140vh) translateX(20px) rotate(360deg); opacity:.06; } }
+    .balloons { 
+        position:fixed; 
+        inset:0; 
+        pointer-events:none; 
+        z-index:5;
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    .balloon { 
+        position:absolute; 
+        bottom:-120px; 
+        border-radius:50%; 
+        opacity:0.9; 
+        transform-origin:center bottom; 
+        filter:blur(.2px); 
+    }
+    
+    @keyframes floatUp { 
+        0% { transform:translateY(0) translateX(0) rotate(0deg); opacity:1; } 
+        100% { transform:translateY(-140vh) translateX(20px) rotate(360deg); opacity:.06; } 
+    }
 
     /* Celebrate final */
-    .celebrate { position:fixed; inset:0; display:grid; place-items:center; background:rgba(0,0,0,0.92); color:#fff; z-index:60; opacity:0; pointer-events:none; transition:opacity 900ms ease; }
-    .celebrate.show { opacity:1; pointer-events:auto; }
-    .finalWrap { text-align:center; position:relative; }
-    .orbit { position:relative; width:520px; height:520px; margin:20px auto 0; }
-    .orbit .cake { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:260px; height:260px; background:url('./assets/img/HappyBirthDay.png') center/contain no-repeat; z-index:30; }
-    .orbit img { position:absolute; width:110px; height:110px; border-radius:12px; object-fit:cover; border:4px solid rgba(255,255,255,0.12); box-shadow:0 8px 30px rgba(0,0,0,0.6); transform-origin:center; }
-    .finalText { margin-top:18px; font-size:22px; }
+    .celebrate { 
+        position:fixed; 
+        inset:0; 
+        display:grid; 
+        place-items:center; 
+        background:rgba(0,0,0,0.92); 
+        color:#fff; 
+        z-index:60; 
+        opacity:0; 
+        pointer-events:none; 
+        transition:opacity 900ms ease;
+        width: 100vw;
+        height: 100vh;
+        padding: clamp(20px, 4vw, 40px);
+    }
+    
+    .celebrate.show { 
+        opacity:1; 
+        pointer-events:auto; 
+    }
+    
+    .finalWrap { 
+        text-align:center; 
+        position:relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .orbit { 
+        position:relative; 
+        width: clamp(280px, 60vw, 520px);
+        height: clamp(280px, 60vw, 520px);
+        margin: 0 auto;
+        flex-shrink: 0;
+    }
+    
+    .orbit .cake { 
+        position:absolute; 
+        left:50%; 
+        top:50%; 
+        transform:translate(-50%,-50%); 
+        width: clamp(140px, 30vw, 260px);
+        height: clamp(140px, 30vw, 260px);
+        background:url('./assets/img/HappyBirthDay.png') center/contain no-repeat; 
+        z-index:30; 
+    }
+    
+    .orbit img { 
+        position:absolute; 
+        width: clamp(60px, 12vw, 110px);
+        height: clamp(60px, 12vw, 110px);
+        border-radius: clamp(8px, 1.5vw, 12px);
+        object-fit:cover; 
+        border:4px solid rgba(255,255,255,0.12); 
+        box-shadow:0 8px 30px rgba(0,0,0,0.6); 
+        transform-origin:center; 
+    }
+    
+    .finalText { 
+        margin-top: clamp(12px, 3vh, 24px);
+        font-size: clamp(16px, 3.5vw, 22px);
+        line-height: 1.4;
+        max-width: 90%;
+    }
 
     /* fade */
     .fadeIn { animation:fadeIn 420ms ease both; }
@@ -94,16 +355,303 @@
     @keyframes fadeIn { from {opacity:0; transform:translateY(6px);} to {opacity:1; transform:none;} }
     @keyframes fadeOut { from {opacity:1;} to {opacity:0; transform:translateY(-6px);} }
 
-    @media (max-width:820px) {
-        .content { font-size:22px; }
-        .orbit { width:360px; height:360px; }
-        .orbit img { width:80px; height:80px; }
-        .headline { font-size:28px; }
+    /* Enhanced responsive breakpoints */
+    
+    /* Very small phones (320px and below) */
+    @media (max-width: 320px) {
+        .card {
+            padding: 16px;
+            height: clamp(250px, 80vh, 400px);
+        }
+        
+        .content {
+            font-size: 14px;
+            line-height: 1.3;
+        }
+        
+        .headline {
+            font-size: 16px;
+            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .orbit {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .orbit .cake {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .orbit img {
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    /* Small phones (321px - 480px) */
+    @media (min-width: 321px) and (max-width: 480px) {
+        .card {
+            padding: 18px;
+            height: clamp(280px, 75vh, 450px);
+        }
+        
+        .content {
+            font-size: clamp(15px, 4.2vw, 20px);
+        }
+        
+        .orbit {
+            width: clamp(220px, 50vw, 300px);
+            height: clamp(220px, 50vw, 300px);
+        }
+        
+        .orbit .cake {
+            width: clamp(110px, 25vw, 150px);
+            height: clamp(110px, 25vw, 150px);
+        }
+        
+        .orbit img {
+            width: clamp(50px, 10vw, 70px);
+            height: clamp(50px, 10vw, 70px);
+        }
+    }
+
+    /* Medium phones and small tablets (481px - 768px) */
+    @media (min-width: 481px) and (max-width: 768px) {
+        .card {
+            padding: clamp(20px, 3vw, 28px);
+            height: clamp(320px, 65vh, 480px);
+        }
+        
+        .content {
+            font-size: clamp(18px, 3.8vw, 24px);
+        }
+        
+        .orbit {
+            width: clamp(300px, 55vw, 400px);
+            height: clamp(300px, 55vw, 400px);
+        }
+        
+        .orbit .cake {
+            width: clamp(150px, 28vw, 200px);
+            height: clamp(150px, 28vw, 200px);
+        }
+        
+        .orbit img {
+            width: clamp(70px, 11vw, 90px);
+            height: clamp(70px, 11vw, 90px);
+        }
+    }
+
+    /* Tablets (769px - 1024px) */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .card {
+            padding: clamp(28px, 3.5vw, 32px);
+            height: clamp(350px, 60vh, 500px);
+        }
+        
+        .content {
+            font-size: clamp(22px, 3.2vw, 26px);
+        }
+        
+        .orbit {
+            width: clamp(400px, 50vw, 480px);
+            height: clamp(400px, 50vw, 480px);
+        }
+        
+        .orbit .cake {
+            width: clamp(200px, 25vw, 240px);
+            height: clamp(200px, 25vw, 240px);
+        }
+        
+        .orbit img {
+            width: clamp(85px, 10vw, 105px);
+            height: clamp(85px, 10vw, 105px);
+        }
+    }
+
+    /* Large tablets and small desktops (1025px - 1440px) */
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        .card {
+            padding: clamp(32px, 3vw, 36px);
+            max-width: 900px;
+            height: clamp(400px, 55vh, 500px);
+        }
+        
+        .content {
+            font-size: clamp(24px, 2.8vw, 28px);
+        }
+        
+        .orbit {
+            width: clamp(450px, 45vw, 520px);
+            height: clamp(450px, 45vw, 520px);
+        }
+        
+        .orbit .cake {
+            width: clamp(220px, 22vw, 260px);
+            height: clamp(220px, 22vw, 260px);
+        }
+        
+        .orbit img {
+            width: clamp(95px, 9vw, 110px);
+            height: clamp(95px, 9vw, 110px);
+        }
+    }
+
+    /* Large desktops (1441px and above) */
+    @media (min-width: 1441px) {
+        .card {
+            max-width: 1000px;
+            height: 450px;
+            padding: 36px;
+        }
+        
+        .content {
+            font-size: 28px;
+        }
+        
+        .orbit {
+            width: 520px;
+            height: 520px;
+        }
+        
+        .orbit .cake {
+            width: 260px;
+            height: 260px;
+        }
+        
+        .orbit img {
+            width: 110px;
+            height: 110px;
+        }
+    }
+
+    /* Landscape orientation adjustments for mobile */
+    @media (orientation: landscape) and (max-height: 500px) {
+        .card {
+            height: clamp(250px, 80vh, 350px);
+            padding: clamp(16px, 2vh, 24px);
+        }
+        
+        .content {
+            font-size: clamp(14px, 3vh, 20px);
+            padding: clamp(8px, 1vh, 16px) 0;
+        }
+        
+        .headline {
+            font-size: clamp(18px, 4vh, 28px);
+            margin-bottom: clamp(8px, 1vh, 12px);
+        }
+        
+        .orbit {
+            width: clamp(200px, 35vh, 320px);
+            height: clamp(200px, 35vh, 320px);
+        }
+        
+        .orbit .cake {
+            width: clamp(100px, 18vh, 160px);
+            height: clamp(100px, 18vh, 160px);
+        }
+        
+        .orbit img {
+            width: clamp(45px, 8vh, 70px);
+            height: clamp(45px, 8vh, 70px);
+        }
+        
+        .bottomBar {
+            bottom: clamp(8px, 1vh, 12px);
+        }
+    }
+
+    /* Ultra-wide screens */
+    @media (min-aspect-ratio: 21/9) {
+        .card {
+            max-width: 800px;
+        }
+        
+        .orbit {
+            width: 400px;
+            height: 400px;
+        }
+    }
+
+    /* High DPI displays */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .orbit .cake,
+        .orbit img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+    }
+
+    /* Fullscreen mode styles */
+    .fullscreen-mode {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+    }
+
+    /* Hide all possible browser UI elements when in fullscreen */
+    html.fullscreen-active {
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.fullscreen-active {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Additional mobile optimizations */
+    @media (hover: none) and (pointer: coarse) {
+        /* Touch device optimizations */
+        #startScreen button {
+            min-height: 44px;
+            min-width: 120px;
+        }
+        
+        .card {
+            /* Prevent zoom on double tap */
+            touch-action: manipulation;
+        }
+        
+        /* Improve text readability on mobile */
+        .content {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    }
+
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        body::before {
+            filter: blur(6px) brightness(0.8);
+        }
+    }
+
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        .balloon {
+            animation-duration: 20s;
+        }
+        
+        .fadeIn, .fadeOut {
+            animation-duration: 100ms;
+        }
+        
+        .progressInner {
+            transition-duration: 100ms;
+        }
     }
 </style>
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 
 <body>
@@ -158,8 +706,11 @@ const overlay = document.getElementById('overlay');
 const rotateNotice = document.getElementById('rotateNotice');
 
 let started = false;
-let orientationChecked = false; // fix: khai báo cờ này
-bgm.src = DEFAULT_MUSIC; bgm.volume=0.8;
+let orientationChecked = false;
+let isFullscreen = false;
+
+bgm.src = DEFAULT_MUSIC; 
+bgm.volume = 0.8;
 
 const script = [
     { text:"Khoảnh khắc mà tui chờ từ lâu cuối cùng cũng tới. Hôm nay là ngày của bà — và tui muốn dành cả tấm lòng này để nói những điều thật giản dị nhưng chân thành.", hold:6000 },
@@ -174,139 +725,567 @@ const script = [
     { text:"Một lần nữa, chúc mừng sinh nhật bà. Hãy để hôm nay là khởi đầu cho mọi điều tốt đẹp và cho những yêu thương sẽ đến.", hold:6500 }
 ];
 
-function isLandscape(){ return window.innerWidth > window.innerHeight; }
-function checkOrientationAndStart(){
-    // chỉ hiện overlay nếu chưa bấm start và chưa kiểm tra orientation
-    if(!started && !isLandscape() && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) && !orientationChecked){
+// Fullscreen functions
+function enterFullscreen() {
+    const element = document.documentElement;
+    
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    }
+    
+    // Add classes for additional UI hiding
+    document.documentElement.classList.add('fullscreen-active');
+    document.body.classList.add('fullscreen-active');
+    
+    // Additional mobile browser UI hiding techniques
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        // iOS Safari
+        document.addEventListener('touchstart', preventZoom, { passive: false });
+        document.addEventListener('touchmove', preventZoom, { passive: false });
+        
+        // Hide address bar on iOS
+        setTimeout(() => {
+            window.scrollTo(0, 1);
+        }, 100);
+        
+        // Add to home screen styling
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui');
+        }
+    }
+    
+    // Android Chrome
+    if (/Android/.test(navigator.userAgent)) {
+        // Request fullscreen with additional options
+        if (element.requestFullscreen) {
+            element.requestFullscreen({ navigationUI: "hide" });
+        }
+    }
+    
+    isFullscreen = true;
+}
+
+function preventZoom(e) {
+    if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+    }
+}
+
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+    
+    document.documentElement.classList.remove('fullscreen-active');
+    document.body.classList.remove('fullscreen-active');
+    
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document.removeEventListener('touchstart', preventZoom);
+        document.removeEventListener('touchmove', preventZoom);
+    }
+    
+    isFullscreen = false;
+}
+
+// Listen for fullscreen changes
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const isCurrentlyFullscreen = !!(document.fullscreenElement || 
+                                    document.webkitFullscreenElement || 
+                                    document.mozFullScreenElement || 
+                                    document.msFullscreenElement);
+    
+    if (!isCurrentlyFullscreen && isFullscreen) {
+        // User exited fullscreen manually
+        document.documentElement.classList.remove('fullscreen-active');
+        document.body.classList.remove('fullscreen-active');
+        isFullscreen = false;
+    }
+}
+
+// Enhanced responsive functions
+function getScreenSize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    if (width <= 320) return 'xs';
+    if (width <= 480) return 'sm';
+    if (width <= 768) return 'md';
+    if (width <= 1024) return 'lg';
+    if (width <= 1440) return 'xl';
+    return 'xxl';
+}
+
+function adjustForScreenSize() {
+    const size = getScreenSize();
+    const isLandscapeMobile = window.innerHeight < 500 && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    
+    // Adjust typewriter speed based on screen size
+    const typewriterSpeeds = {
+        'xs': 50,
+        'sm': 45,
+        'md': 40,
+        'lg': 38,
+        'xl': 35,
+        'xxl': 32
+    };
+    
+    window.currentTypewriterSpeed = isLandscapeMobile ? 35 : typewriterSpeeds[size];
+    
+    // Adjust balloon count based on screen size
+    const balloonCounts = {
+        'xs': 8,
+        'sm': 12,
+        'md': 15,
+        'lg': 18,
+        'xl': 22,
+        'xxl': 25
+    };
+    
+    window.currentBalloonCount = balloonCounts[size];
+}
+
+function isLandscape() { 
+    return window.innerWidth > window.innerHeight; 
+}
+
+function checkOrientationAndStart() {
+    adjustForScreenSize();
+    
+    // Only show rotate notice if not started, not landscape, on mobile, and not checked
+    if (!started && !isLandscape() && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) && !orientationChecked) {
         rotateNotice.classList.add('show');
-        overlay.style.opacity='1';
+        overlay.style.opacity = '1';
         return false;
     } else {
-       
         rotateNotice.classList.remove('show');
-    
-        overlay.style.opacity='0.45';
-        orientationChecked = true; // đã kiểm tra xong, không hiện lại
-        if(!started){
+        overlay.style.opacity = '0.45';
+        orientationChecked = true;
+        
+        if (!started) {
             started = true;
             runScript();
-            bgm.play().catch(()=>{});
+            bgm.play().catch(() => {});
         }
         return true;
     }
 }
 
-window.addEventListener('resize', checkOrientationAndStart);
-window.addEventListener('orientationchange', ()=>setTimeout(checkOrientationAndStart, 400));
+// Enhanced window event listeners
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        adjustForScreenSize();
+        checkOrientationAndStart();
+        
+        // Recreate balloons with new count if needed
+        if (started) {
+            recreateBalloons();
+        }
+    }, 100);
+});
 
-function createBalloons(){
-    const count=18;
-    for(let i=0;i<count;i++){
-        const b=document.createElement('div'); b.className='balloon';
-        const size=24+Math.random()*40; b.style.width=b.style.height=size+'px';
-        const side=Math.random()<0.5?'left':'right';
-        b.style.left=(side==='left'?4+Math.random()*18:78+Math.random()*17)+'%';
-        b.style.background='radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95), rgba(255,182,193,0.85))';
-        const dur=10+Math.random()*12;
-        b.style.animation=`floatUp ${dur}s linear ${Math.random()*3}s infinite`;
-        b.style.opacity=0.9-Math.random()*0.45;
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        adjustForScreenSize();
+        checkOrientationAndStart();
+    }, 400);
+});
+
+function createBalloons() {
+    // Clear existing balloons
+    balloonsWrap.innerHTML = '';
+    
+    const count = window.currentBalloonCount || 18;
+    for (let i = 0; i < count; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon';
+        const size = 24 + Math.random() * 40;
+        b.style.width = b.style.height = size + 'px';
+        
+        const side = Math.random() < 0.5 ? 'left' : 'right';
+        b.style.left = (side === 'left' ? 4 + Math.random() * 18 : 78 + Math.random() * 17) + '%';
+        b.style.background = 'radial-gradient(circle at 35% 30%, rgba(255,255,255,0.95), rgba(255,182,193,0.85))';
+        
+        const dur = 10 + Math.random() * 12;
+        b.style.animation = `floatUp ${dur}s linear ${Math.random() * 3}s infinite`;
+        b.style.opacity = 0.9 - Math.random() * 0.45;
+        
         balloonsWrap.appendChild(b);
     }
 }
+
+function recreateBalloons() {
+    createBalloons();
+}
+
+// Initialize on load
+adjustForScreenSize();
 createBalloons();
 
-function fadeInEl(el){ el.classList.remove('fadeOut'); el.classList.add('fadeIn'); }
-function fadeOutEl(el){ el.classList.remove('fadeIn'); el.classList.add('fadeOut'); }
+function fadeInEl(el) { 
+    el.classList.remove('fadeOut'); 
+    el.classList.add('fadeIn'); 
+}
 
-function isShortText(s){ return s.replace(/\s+/g,' ').trim().length<40; }
+function fadeOutEl(el) { 
+    el.classList.remove('fadeIn'); 
+    el.classList.add('fadeOut'); 
+}
 
-function typeText(text, perChar=40){ return new Promise(resolve=>{
-    const card=document.getElementById('card');
-    if(isShortText(text)){ card.querySelector('.content').style.textAlign='center'; } else { card.querySelector('.content').style.textAlign='left'; }
-    twEl.textContent=''; fadeInEl(twEl);
-    let i=0; const chars=[...text];
-    const timer=setInterval(()=>{ twEl.textContent+=chars[i++]||''; if(i>=chars.length){ clearInterval(timer); resolve(); } }, perChar);
-});}
+function isShortText(s) { 
+    return s.replace(/\s+/g, ' ').trim().length < 40; 
+}
 
-function deleteText(perChar=28){ return new Promise(resolve=>{
-    const timer=setInterval(()=>{
-        const txt=twEl.textContent;
-        if(!txt || txt.length===0){ clearInterval(timer); resolve(); return; }
-        twEl.textContent=txt.slice(0,-1);
-    }, perChar);
-});}
+function typeText(text, perChar) {
+    const speed = perChar || window.currentTypewriterSpeed || 40;
+    
+    return new Promise(resolve => {
+        const card = document.getElementById('card');
+        if (isShortText(text)) {
+            card.querySelector('.content').style.textAlign = 'center';
+        } else {
+            card.querySelector('.content').style.textAlign = 'left';
+        }
+        
+        twEl.textContent = '';
+        fadeInEl(twEl);
+        
+        let i = 0;
+        const chars = [...text];
+        const timer = setInterval(() => {
+            twEl.textContent += chars[i++] || '';
+            if (i >= chars.length) {
+                clearInterval(timer);
+                resolve();
+            }
+        }, speed);
+    });
+}
 
-function holdWithCountdown(ms){ return new Promise(resolve=>{
-    const total=Math.max(0,ms); let remaining=Math.ceil(total/1000);
-    progText.textContent=remaining+'s';
-    progressInner.style.transition=`width ${total}ms linear`; progressInner.style.width='0%';
-    void progressInner.offsetWidth; progressInner.style.width='100%';
-    const interval=setInterval(()=>{ remaining--; progText.textContent=(remaining>0?remaining+'s':'0s'); },1000);
-    setTimeout(()=>{ clearInterval(interval); progressInner.style.transition='none'; progressInner.style.width='0%'; progText.textContent=''; resolve(); }, total);
-});}
+function deleteText(perChar = 28) {
+    return new Promise(resolve => {
+        const timer = setInterval(() => {
+            const txt = twEl.textContent;
+            if (!txt || txt.length === 0) {
+                clearInterval(timer);
+                resolve();
+                return;
+            }
+            twEl.textContent = txt.slice(0, -1);
+        }, perChar);
+    });
+}
 
-async function runScript(){
-    for(let i=0;i<script.length;i++){
-        const seg=script[i];
-        if(twEl.textContent){ fadeOutEl(twEl); await new Promise(r=>setTimeout(r,280)); twEl.textContent=''; }
-        await typeText(seg.text,40); await holdWithCountdown(seg.hold); await deleteText(28); await new Promise(r=>setTimeout(r,240));
+function holdWithCountdown(ms) {
+    return new Promise(resolve => {
+        const total = Math.max(0, ms);
+        let remaining = Math.ceil(total / 1000);
+        progText.textContent = remaining + 's';
+        progressInner.style.transition = `width ${total}ms linear`;
+        progressInner.style.width = '0%';
+        void progressInner.offsetWidth;
+        progressInner.style.width = '100%';
+        
+        const interval = setInterval(() => {
+            remaining--;
+            progText.textContent = (remaining > 0 ? remaining + 's' : '0s');
+        }, 1000);
+        
+        setTimeout(() => {
+            clearInterval(interval);
+            progressInner.style.transition = 'none';
+            progressInner.style.width = '0%';
+            progText.textContent = '';
+            resolve();
+        }, total);
+    });
+}
+
+async function runScript() {
+    for (let i = 0; i < script.length; i++) {
+        const seg = script[i];
+        if (twEl.textContent) {
+            fadeOutEl(twEl);
+            await new Promise(r => setTimeout(r, 280));
+            twEl.textContent = '';
+        }
+        
+        await typeText(seg.text);
+        await holdWithCountdown(seg.hold);
+        await deleteText(28);
+        await new Promise(r => setTimeout(r, 240));
     }
-    twEl.style.opacity='0'; overlay.style.opacity='1'; await new Promise(r=>setTimeout(r,700));
+    
+    twEl.style.opacity = '0';
+    overlay.style.opacity = '1';
+    await new Promise(r => setTimeout(r, 700));
     showFinal();
 }
 
-function showFinal(){
+function showFinal() {
     celebrate.classList.add('show');
-    const orbit=document.getElementById('orbit'); orbit.innerHTML='<div class="cake"></div>';
-    const n=6; const radius=Math.min(200, orbit.clientWidth*0.38);
-    for(let i=0;i<n;i++){
-        const img=document.createElement('img'); img.src=`https://via.placeholder.com/200x200?text=Ảnh+${i+1}`; img.style.opacity='0';
+    const orbit = document.getElementById('orbit');
+    orbit.innerHTML = '<div class="cake"></div>';
+    
+    const n = 6;
+    const orbitElement = document.getElementById('orbit');
+    const radius = Math.min(
+        orbitElement.clientWidth * 0.38,
+        orbitElement.clientHeight * 0.38,
+        200
+    );
+    
+    for (let i = 0; i < n; i++) {
+        const img = document.createElement('img');
+        img.src = `https://via.placeholder.com/200x200?text=Ảnh+${i + 1}`;
+        img.style.opacity = '0';
         orbit.appendChild(img);
-        const angle=(i/n)*Math.PI*2 - Math.PI/2;
-        const cx=orbit.clientWidth/2; const cy=orbit.clientHeight/2;
-        const x=cx+Math.cos(angle)*radius-(img.width/2||55);
-        const y=cy+Math.sin(angle)*radius-(img.height/2||55);
-        img.style.left=x+'px'; img.style.top=y+'px';
-        img.style.transition=`transform 700ms ease ${i*90}ms, opacity 700ms ease ${i*90}ms`;
-        setTimeout(()=>{ img.style.opacity='1'; img.style.transform='translateY(-8px)'; }, 200+i*90);
+        
+        const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
+        const cx = orbitElement.clientWidth / 2;
+        const cy = orbitElement.clientHeight / 2;
+        const imgSize = parseInt(getComputedStyle(img).width) || 55;
+        const x = cx + Math.cos(angle) * radius - (imgSize / 2);
+        const y = cy + Math.sin(angle) * radius - (imgSize / 2);
+        
+        img.style.left = x + 'px';
+        img.style.top = y + 'px';
+        img.style.transition = `transform 700ms ease ${i * 90}ms, opacity 700ms ease ${i * 90}ms`;
+        
+        setTimeout(() => {
+            img.style.opacity = '1';
+            img.style.transform = 'translateY(-8px)';
+        }, 200 + i * 90);
     }
+    
     launchConfetti();
 }
 
-function launchConfetti(){
-    const wrap=document.createElement('div'); wrap.style.position='fixed'; wrap.style.left='0'; wrap.style.top='0'; wrap.style.width='100%'; wrap.style.height='100%'; wrap.style.pointerEvents='none'; wrap.style.zIndex=120;
+function launchConfetti() {
+    const wrap = document.createElement('div');
+    wrap.style.position = 'fixed';
+    wrap.style.left = '0';
+    wrap.style.top = '0';
+    wrap.style.width = '100%';
+    wrap.style.height = '100%';
+    wrap.style.pointerEvents = 'none';
+    wrap.style.zIndex = 120;
     document.body.appendChild(wrap);
-    const colors=['#ff8fc3','#ffd166','#7ef0c7','#ffd5f0','#b3e5ff']; const pieces=40;
-    for(let i=0;i<pieces;i++){
-        const d=document.createElement('div'); const size=6+Math.random()*12; d.style.width=d.style.height=size+'px';
-        d.style.background=colors[Math.floor(Math.random()*colors.length)];
-        d.style.position='absolute'; d.style.left=(30+Math.random()*40)+'%'; d.style.top=(40+Math.random()*20)+'%'; d.style.opacity='1';
-        d.style.borderRadius=(Math.random()>0.6?'0':'50%'); d.style.transform=`translateY(0) rotate(${Math.random()*360}deg)`;
-        d.style.transition=`transform ${1200+Math.random()*900}ms cubic-bezier(.2,.8,.2,1), opacity 1200ms linear`;
-        wrap.appendChild(d); setTimeout(()=>{ d.style.transform=`translate(${(-120+Math.random()*240)}px, ${-700-Math.random()*200}px) rotate(${Math.random()*720}deg)`; d.style.opacity='0'; }, 80+i*20);
+    
+    const colors = ['#ff8fc3', '#ffd166', '#7ef0c7', '#ffd5f0', '#b3e5ff'];
+    const pieces = Math.min(40, Math.max(20, window.innerWidth / 30)); // Responsive confetti count
+    
+    for (let i = 0; i < pieces; i++) {
+        const d = document.createElement('div');
+        const size = 6 + Math.random() * 12;
+        d.style.width = d.style.height = size + 'px';
+        d.style.background = colors[Math.floor(Math.random() * colors.length)];
+        d.style.position = 'absolute';
+        d.style.left = (30 + Math.random() * 40) + '%';
+        d.style.top = (40 + Math.random() * 20) + '%';
+        d.style.opacity = '1';
+        d.style.borderRadius = (Math.random() > 0.6 ? '0' : '50%');
+        d.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+        d.style.transition = `transform ${1200 + Math.random() * 900}ms cubic-bezier(.2,.8,.2,1), opacity 1200ms linear`;
+        
+        wrap.appendChild(d);
+        
+        setTimeout(() => {
+            d.style.transform = `translate(${(-120 + Math.random() * 240)}px, ${-700 - Math.random() * 200}px) rotate(${Math.random() * 720}deg)`;
+            d.style.opacity = '0';
+        }, 80 + i * 20);
     }
-    setTimeout(()=>wrap.remove(),2600);
+    
+    setTimeout(() => wrap.remove(), 2600);
 }
 
-function hideSafariAddressBar(){ setTimeout(()=>window.scrollTo(0,1),100); document.documentElement.style.height='100%'; document.body.style.height='100%'; document.body.style.margin='0'; document.body.style.padding='0'; }
+function hideSafariAddressBar() {
+    setTimeout(() => {
+        window.scrollTo(0, 1);
+        // Additional techniques for hiding mobile browser UI
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            document.body.style.height = window.innerHeight + 'px';
+        }
+    }, 100);
+    
+    document.documentElement.style.height = '100%';
+    document.body.style.height = '100%';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+}
 
-window.addEventListener('load',()=>{
-    bgm.play().catch(()=>{});
-    hideSafariAddressBar();
+// Enhanced keyboard handling for fullscreen
+document.addEventListener('keydown', (e) => {
+    if (started) {
+        // Escape key to exit fullscreen
+        if (e.key === 'Escape' && isFullscreen) {
+            exitFullscreen();
+        }
+        // F11 or F key to toggle fullscreen
+        if ((e.key === 'F11' || e.key === 'f') && !e.ctrlKey && !e.altKey) {
+            e.preventDefault();
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                enterFullscreen();
+            }
+        }
+    }
 });
 
-startBtn.addEventListener('click',()=>{
-    startScreen.style.display='none';
-    bgm.play().catch(()=>console.log("BGM blocked"));
-    checkOrientationAndStart(); // bấm start = chạy script + ẩn overlay
+// Touch and gesture handling for mobile
+let touchStartTime = 0;
+let touchStartY = 0;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartTime = Date.now();
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+    const touchEndTime = Date.now();
+    const touchEndY = e.changedTouches[0].clientY;
+    const touchDuration = touchEndTime - touchStartTime;
+    const touchDistance = Math.abs(touchEndY - touchStartY);
+    
+    // Double tap to toggle fullscreen (if not a scroll gesture)
+    if (touchDuration < 300 && touchDistance < 10 && started) {
+        if (isFullscreen) {
+            exitFullscreen();
+        } else {
+            enterFullscreen();
+        }
+    }
+}, { passive: true });
+
+window.addEventListener('load', () => {
+    bgm.play().catch(() => {});
+    hideSafariAddressBar();
+    adjustForScreenSize();
+});
+
+startBtn.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    
+    // Enter fullscreen when starting slideshow
+    enterFullscreen();
+    
+    bgm.play().catch(() => console.log("BGM blocked"));
+    checkOrientationAndStart();
 });
 
 // Update orbit photos externally
-window.updatePhotos=function(urls){
-    const orbit=document.getElementById('orbit');
-    const imgs=orbit.querySelectorAll('img');
-    for(let i=0;i<imgs.length && i<urls.length;i++){ imgs[i].src=urls[i]||imgs[i].src; }
+window.updatePhotos = function(urls) {
+    const orbit = document.getElementById('orbit');
+    const imgs = orbit.querySelectorAll('img');
+    for (let i = 0; i < imgs.length && i < urls.length; i++) {
+        imgs[i].src = urls[i] || imgs[i].src;
+    }
 };
+
+// Prevent context menu on long press (mobile)
+document.addEventListener('contextmenu', (e) => {
+    if (started) {
+        e.preventDefault();
+    }
+});
+
+// Prevent text selection
+document.addEventListener('selectstart', (e) => {
+    if (started) {
+        e.preventDefault();
+    }
+});
+
+// Handle page visibility changes
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        bgm.pause();
+    } else if (started) {
+        bgm.play().catch(() => {});
+    }
+});
+
+// Responsive image loading
+function loadImageWithFallback(img, primarySrc, fallbackSrc) {
+    img.onerror = () => {
+        if (fallbackSrc && img.src !== fallbackSrc) {
+            img.src = fallbackSrc;
+        }
+    };
+    img.src = primarySrc;
+}
+
+// Enhanced update photos function with responsive loading
+window.updatePhotos = function(urls) {
+    const orbit = document.getElementById('orbit');
+    const imgs = orbit.querySelectorAll('img');
+    
+    for (let i = 0; i < imgs.length && i < urls.length; i++) {
+        if (urls[i]) {
+            loadImageWithFallback(
+                imgs[i], 
+                urls[i], 
+                `https://via.placeholder.com/200x200?text=Ảnh+${i + 1}`
+            );
+        }
+    }
+};
+
+// Performance optimization: Intersection Observer for balloons
+if ('IntersectionObserver' in window) {
+    const balloonObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'paused';
+            } else {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    });
+    
+    // Observe balloons when they're created
+    const originalCreateBalloons = createBalloons;
+    createBalloons = function() {
+        originalCreateBalloons();
+        const balloons = balloonsWrap.querySelectorAll('.balloon');
+        balloons.forEach(balloon => balloonObserver.observe(balloon));
+    };
+}
+
+// Initialize responsive features
+document.addEventListener('DOMContentLoaded', () => {
+    adjustForScreenSize();
+    
+    // Set initial viewport height for mobile browsers
+    const setVH = () => {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', () => setTimeout(setVH, 100));
+});
 </script>
 </body>
 </html>
