@@ -5,6 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🎂 Chúc mừng sinh nhật – Nguyễn Thị Bích Yên</title>
+
+
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         *,
@@ -15,17 +17,24 @@
 
         html,
         body {
-            height: 100dvh;
-            /* Safari iOS mới */
+            position: relative;
             margin: 0;
             font-family: 'Dancing Script', cursive, 'Courier New', monospace;
-            background: url('./assets/img/BirthdayCommingSoon.png') center/cover no-repeat;
-            color: #fff;
             overflow: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-       
+        body::before {
+            content: '';
+            position: fixed;
+            /* phủ toàn màn hình */
+            inset: 0;
+            background: url('./assets/img/BirthdayCommingSoon.png') center/cover no-repeat;
+            filter: blur(6px);
+            z-index: -1;
+            /* đưa xuống dưới content */
+        }
+
+
 
         /* rotate hint (bắt xoay ngang trên mobile) */
         .rotateNotice {
@@ -74,6 +83,7 @@
 
         .card {
             max-width: 1000px;
+            height: 400px;
             width: calc(100% - 48px);
             background: rgba(0, 0, 0, 0.55);
             border-radius: 20px;
@@ -111,15 +121,17 @@
             line-height: 1.45;
             min-height: 12em;
             color: #fff;
-            display: flex;
+            display: block;
             align-items: center;
+            text-align: center;
         }
 
         .typewriter {
-            display: inline-block;
+            display: block;
             white-space: pre-wrap;
             max-width: 92%;
             margin: 0 auto;
+            text-align: center;
         }
 
         /* Caret: dùng pseudo-element để luôn dính sát cuối chữ, mượt*/
@@ -315,6 +327,9 @@
             }
         }
     </style>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 
 <body>
@@ -358,7 +373,7 @@
 
     <script>
         // ====== Cấu hình ======
-        const DEFAULT_MUSIC = 'media/happy-birthday-piano.mp3';
+        const DEFAULT_MUSIC = './assets/song.mp3';
 
         // Kịch bản (ngôi tui - bà), mạch văn nối hơn, không dấu '-' và ngắn/ dài hợp lý
         const script = [
@@ -387,6 +402,16 @@
         // Music cố định (thử play, nhưng browser có thể chặn autoplay với âm thanh)
         bgm.src = DEFAULT_MUSIC;
         bgm.volume = 0.8;
+
+        function startBgm() {
+            bgm.play().catch(() => {
+                console.log("BGM blocked, chờ tương tác từ người dùng.");
+            });
+        }
+
+        // Thêm listener để người dùng bấm bất kỳ đâu trên màn hình
+        document.body.addEventListener('click', startBgm, { once: true });
+        document.body.addEventListener('touchstart', startBgm, { once: true });
 
         // --- ROTATE / MOBILE handling ---
         function isLandscape() {
@@ -602,12 +627,19 @@
             setTimeout(() => wrap.remove(), 2600);
         }
 
+        function hideSafariAddressBar() {
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+            }, 100); // cho iOS kịp render
+        }
+
         // Start when page loaded and orientation ok
         window.addEventListener('load', () => {
             // try to play bgm (may be blocked)
             bgm.play().catch(() => { });
             // check orientation and start only when landscape on mobile or always on desktop
             checkOrientationAndStart();
+            hideSafariAddressBar();
         });
 
         // External helper: update orbit photos after final shown
