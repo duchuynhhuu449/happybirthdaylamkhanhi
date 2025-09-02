@@ -713,16 +713,16 @@ bgm.src = DEFAULT_MUSIC;
 bgm.volume = 0.8;
 
 const script = [
-    { text:"Khoảnh khắc mà tui chờ từ lâu cuối cùng cũng tới. Hôm nay là ngày của bà — và tui muốn dành cả tấm lòng này để nói những điều thật giản dị nhưng chân thành.", hold:6000 },
-    { text:"Nguyễn Thị Bích Yên", hold:3000 },
-    { text:"08/09/2004", hold:3000 },
-    { text:"Hôm nay bà 22 tuổi. Tuổi của những khởi đầu, của những dự định còn dang dở và những ước mơ còn chưa kịp nói.", hold:5500 },
-    { text:"Chúc bà một ngày thật trọn vẹn. Tui mong bà luôn thấy ấm áp, luôn có tiếng cười và luôn cảm thấy an toàn bên những người yêu thương.", hold:7000 },
-    { text:"Hãy cứ dũng cảm theo đuổi những điều bà muốn. Tui tin bà làm được — và tui ở đây, âm thầm cổ vũ, nắm chặt niềm tin ấy cùng bà.", hold:6500 },
-    { text:"Có một điều tui giữ trong lòng lâu rồi. Tui thích cách bà cười, thích cách bà dịu dàng với mọi người, và tự nhiên tui muốn được gần bà hơn nữa.", hold:9000 },
-    { text:"Nếu bà cho phép, tui muốn được nắm tay bà trong những ngày bình thường lẫn những ngày đặc biệt. Không vội, chỉ chân thành và kiên nhẫn.", hold:8000 },
-    { text:"Mong tuổi mới sẽ mở ra những niềm vui không ngờ, những kỷ niệm ngọt ngào và những người bạn thật lòng đồng hành cùng bà.", hold:5500 },
-    { text:"Một lần nữa, chúc mừng sinh nhật bà. Hãy để hôm nay là khởi đầu cho mọi điều tốt đẹp và cho những yêu thương sẽ đến.", hold:6500 }
+    { text:"Khoảnh khắc mà tui chờ từ lâu cuối cùng cũng tới. Hôm nay là ngày của bà — và tui muốn dành cả tấm lòng này để nói những điều thật giản dị nhưng chân thành.", hold:600 },
+    { text:"Nguyễn Thị Bích Yên", hold:300 },
+    { text:"08/09/2004", hold:300 },
+    { text:"Hôm nay bà 22 tuổi. Tuổi của những khởi đầu, của những dự định còn dang dở và những ước mơ còn chưa kịp nói.", hold:550 },
+    { text:"Chúc bà một ngày thật trọn vẹn. Tui mong bà luôn thấy ấm áp, luôn có tiếng cười và luôn cảm thấy an toàn bên những người yêu thương.", hold:70 },
+    { text:"Hãy cứ dũng cảm theo đuổi những điều bà muốn. Tui tin bà làm được — và tui ở đây, âm thầm cổ vũ, nắm chặt niềm tin ấy cùng bà.", hold:650 },
+    { text:"Có một điều tui giữ trong lòng lâu rồi. Tui thích cách bà cười, thích cách bà dịu dàng với mọi người, và tự nhiên tui muốn được gần bà hơn nữa.", hold:900 },
+    { text:"Nếu bà cho phép, tui muốn được nắm tay bà trong những ngày bình thường lẫn những ngày đặc biệt. Không vội, chỉ chân thành và kiên nhẫn.", hold:800 },
+    { text:"Mong tuổi mới sẽ mở ra những niềm vui không ngờ, những kỷ niệm ngọt ngào và những người bạn thật lòng đồng hành cùng bà.", hold:550 },
+    { text:"Một lần nữa, chúc mừng sinh nhật bà. Hãy để hôm nay là khởi đầu cho mọi điều tốt đẹp và cho những yêu thương sẽ đến.", hold:650 }
 ];
 
 // Fullscreen functions
@@ -1056,7 +1056,7 @@ function showFinal() {
     
     for (let i = 0; i < n; i++) {
         const img = document.createElement('img');
-        img.src = `https://via.placeholder.com/200x200?text=Ảnh+${i + 1}`;
+        img.src = `./assets/img/anh_${i + 1}.png`;
         img.style.opacity = '0';
         orbit.appendChild(img);
         
